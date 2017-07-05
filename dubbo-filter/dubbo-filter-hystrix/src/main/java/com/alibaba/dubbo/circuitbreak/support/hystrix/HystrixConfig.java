@@ -11,7 +11,7 @@ import com.netflix.hystrix.HystrixThreadPoolKey;
 public abstract class HystrixConfig extends HystrixCommand<Result> {
 
 	private static final int DEFAULT_THREADPOOL_CORE_SIZE = 10;
-	private static final boolean BREAK_ENABLED = true;// 是否开启断路器
+	private static final boolean BREAK_ENABLED = false;// 是否开启断路器
 	private static final int ROLLING_STATISTICAL_WINDOW_INMILLISECONDS = 10000;// 统计时间滚动窗口，以毫秒为单位，默认：10秒
 	private static final int THRESHOLD_VALUE = 10;// 断路器在整个统计时间内是否开启的阀值，也就是10秒钟内至少请求10次，断路器才发挥起作用
 	private static final int BREAKER_SLEEP_MILLISECONDS = 5000;// 断路器默认工作时间，默认:5秒，断路器中断请求5秒后会进入半打开状态，放部分流量过去重试
@@ -67,7 +67,7 @@ public abstract class HystrixConfig extends HystrixCommand<Result> {
 	 */
 	protected static boolean getBreakerEnabled(URL url) {
 		if (url != null) {
-			boolean breakerEnabled = url.getParameter("breakerEnabled", true);
+			boolean breakerEnabled = url.getParameter("breakerEnabled", false);
 			if (logger.isDebugEnabled()) {
 				logger.debug("breakerEnabled:" + breakerEnabled);
 			}
