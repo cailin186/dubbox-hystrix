@@ -2,6 +2,7 @@ package com.alibaba.dubbo.circuitbreak.support.hystrix;
 
 import org.apache.log4j.Logger;
 
+import com.alibaba.dubbo.circuitbreak.util.ProfileUtil;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.rpc.Result;
 import com.netflix.hystrix.HystrixCommand;

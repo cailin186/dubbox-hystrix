@@ -4,6 +4,7 @@ import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.circuitbreak.CircuitBreaker;
 import com.alibaba.dubbo.circuitbreak.CircuitBreakerFactory;
+import com.alibaba.dubbo.circuitbreak.util.ProfileUtil;
 import com.alibaba.dubbo.rpc.Invocation;
 import com.alibaba.dubbo.rpc.Invoker;
 

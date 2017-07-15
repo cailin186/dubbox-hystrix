@@ -5,6 +5,7 @@ import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.common.utils.ConfigUtils;
 import com.alibaba.dubbo.circuitbreak.CircuitBreaker;
 import com.alibaba.dubbo.circuitbreak.CircuitBreakerFactory;
+import com.alibaba.dubbo.circuitbreak.util.ProfileUtil;
 import com.alibaba.dubbo.rpc.*;
 
 /**
@@ -27,6 +28,7 @@ public class CircuitBreakerFilter implements Filter {
      */
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
+    	
         if (circuitBreakerFactory != null && ConfigUtils.isNotEmpty(invoker.getUrl().getMethodParameter(invocation.getMethodName(), Constants.CIRCUIT_BREAKER_KEY))) {
             CircuitBreaker circuitBreaker = circuitBreakerFactory.getCircuitBreaker(invoker, invocation);
             if (circuitBreaker != null) {

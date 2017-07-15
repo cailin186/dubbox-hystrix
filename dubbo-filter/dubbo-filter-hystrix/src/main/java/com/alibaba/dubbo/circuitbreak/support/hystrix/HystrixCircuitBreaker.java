@@ -3,6 +3,8 @@ package com.alibaba.dubbo.circuitbreak.support.hystrix;
 import org.apache.log4j.Logger;
 
 import com.alibaba.dubbo.circuitbreak.CircuitBreaker;
+import com.alibaba.dubbo.circuitbreak.util.ProfileUtil;
+import com.alibaba.dubbo.circuitbreak.util.mail.EmailBatchSendUtils;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.rpc.*;
 import com.netflix.hystrix.*;
@@ -26,7 +28,7 @@ public class HystrixCircuitBreaker extends HystrixConfig implements CircuitBreak
 	 */
 	public HystrixCircuitBreaker(Invoker<?> invoker, Invocation invocation) {
 		
-		
+	
 
 		// 用Dubbo服务提供者接口名来定义断路器分组key
 		super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(invoker.getInterface().getName()))
@@ -63,6 +65,8 @@ public class HystrixCircuitBreaker extends HystrixConfig implements CircuitBreak
 	protected Result getFallback() {
 		Throwable throwable = new RpcException("Hystrix fallback");
 		Result result = new RpcResult(throwable);
+	   	String mailTo = ProfileUtil.getProperty("monitor.mail.to") == null ? "cailin@51talk.com" : ProfileUtil.getProperty("monitor.mail.to");
+		EmailBatchSendUtils.sendMail(mailTo,"熔断报警",throwable.getStackTrace().toString());
 		return result;
 	}
 
