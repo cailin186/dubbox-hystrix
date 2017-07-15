@@ -130,3 +130,16 @@ public class SayHelloCommand extends HystrixCommand<String> {
 }
 
 ```
+
+5.增加熔断后的邮件报警
+采用邮件队列的形式进行邮件报警，当达到邮件队列的临界值时才会报警，若单位时间内的报警比较多，会对报警邮件进行合并
+1）需要在自己的应用中添加一个mail.properties文件
+```
+sendcloud.url=xxx #邮件服务器地址
+sendcloud.apiUser=xxx#发件人邮箱
+sendcloud.apiKey=xxx #发件人密码
+sendcloud.open=yes
+monitor.mail.to=xxx@qq.com #收件人的逗号分隔
+email.queue.size=10 #邮件队列大小
+email.fixsend.time.interval=200  #发送时间间隔
+```
