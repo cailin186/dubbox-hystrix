@@ -1,37 +1,37 @@
-1.¶ÏÂ·Æ÷ÔÚdubboÖĞµÄÅäÖÃ
-³ı  
+1.æ–­è·¯å™¨åœ¨dubboä¸­çš„é…ç½®
+é™¤  
 ```
 <dubbo:parameter key="breakerEnabled" value="true"/>
 ```
-Íâ£¬ÆäËûËùÓĞµÄÄÚÈİ¶¼²ÉÓÃÄ¬ÈÏÖµ
+å¤–ï¼Œå…¶ä»–æ‰€æœ‰çš„å†…å®¹éƒ½é‡‡ç”¨é»˜è®¤å€¼
 
-###1.²ÎÊıÅäÖÃ###
+###1.å‚æ•°é…ç½®###
 
-2.consumer¶ËÏêÏ¸µÄÅäÖÃ
+2.consumerç«¯è¯¦ç»†çš„é…ç½®
 ```
 	<dubbo:reference id="stuPointStatisticsService"  interface="com.talk51.modules.point.StuPointStatisticsService" protocol="dubbo" retries="0"
 		version="3.0.3"  circuitbreak="hystrix" >
-		<!--Õâ¸öÖµ×îºÃºÍprovider¶ËÏàÍ¬-->
+		<!--è¿™ä¸ªå€¼æœ€å¥½å’Œproviderç«¯ç›¸åŒ-->
 	      <dubbo:parameter key="threadPoolCoreSize" value="1000"/>
-		  <!--¿ªÆô¶ÏÂ·Æ÷£¬Ä¬ÈÏÎª²»¿ªÆô-->
+		  <!--å¼€å¯æ–­è·¯å™¨ï¼Œé»˜è®¤ä¸ºä¸å¼€å¯-->
 		  <dubbo:parameter key="breakerEnabled" value="true"/>
-		  <!--Í³¼ÆÊ±¼ä¹ö¶¯´°¿Ú£¬ÒÔºÁÃëÎªµ¥Î»£¬Ä¬ÈÏ£º10Ãë-->
+		  <!--ç»Ÿè®¡æ—¶é—´æ»šåŠ¨çª—å£ï¼Œä»¥æ¯«ç§’ä¸ºå•ä½ï¼Œé»˜è®¤ï¼š10ç§’-->
 		 <dubbo:parameter key="RollingStatisticalWindowInMilliseconds" value="10000"/>
-		  <!--Ê±¼ä´°¿ÚÄÚµÄ¶ÏÂ·Æ÷ãĞÖµ£¬Âú×ã¸ÃãĞÖµ£¬¶ÏÂ·Æ÷Æô¶¯£¬Ä¬ÈÏÎª10
-		  ¶ÏÂ·Æ÷ÔÚÕû¸öÍ³¼ÆÊ±¼äÄÚÊÇ·ñ¿ªÆôµÄ·§Öµ£¬Ò²¾ÍÊÇ10ÃëÖÓÄÚÖÁÉÙÇëÇó10´Î£¬¶ÏÂ·Æ÷²Å·¢»ÓÆğ×÷ÓÃ  -->
+		  <!--æ—¶é—´çª—å£å†…çš„æ–­è·¯å™¨é˜ˆå€¼ï¼Œæ»¡è¶³è¯¥é˜ˆå€¼ï¼Œæ–­è·¯å™¨å¯åŠ¨ï¼Œé»˜è®¤ä¸º10
+		  æ–­è·¯å™¨åœ¨æ•´ä¸ªç»Ÿè®¡æ—¶é—´å†…æ˜¯å¦å¼€å¯çš„é˜€å€¼ï¼Œä¹Ÿå°±æ˜¯10ç§’é’Ÿå†…è‡³å°‘è¯·æ±‚10æ¬¡ï¼Œæ–­è·¯å™¨æ‰å‘æŒ¥èµ·ä½œç”¨  -->
 		  <dubbo:parameter key="ThresholdValue" value="10"/>
-		  <!--¶ÏÂ·Æ÷Ä¬ÈÏ¹¤×÷Ê±¼ä£¬Ä¬ÈÏ:5Ãë£¬¶ÏÂ·Æ÷ÖĞ¶ÏÇëÇó5Ãëºó»á½øÈë°ë´ò¿ª×´Ì¬£¬·Å²¿·ÖÁ÷Á¿¹ıÈ¥ÖØÊÔ-->
+		  <!--æ–­è·¯å™¨é»˜è®¤å·¥ä½œæ—¶é—´ï¼Œé»˜è®¤:5ç§’ï¼Œæ–­è·¯å™¨ä¸­æ–­è¯·æ±‚5ç§’åä¼šè¿›å…¥åŠæ‰“å¼€çŠ¶æ€ï¼Œæ”¾éƒ¨åˆ†æµé‡è¿‡å»é‡è¯•-->
           <dubbo:parameter key="breakerSleepMilliseconds" value="5000"/>
-          <!-- µ±³ö´íÂÊ³¬¹ı50%ºó¶ÏÂ·Æ÷Æô¶¯£¬Ä¬ÈÏ:50%-->
+          <!-- å½“å‡ºé”™ç‡è¶…è¿‡50%åæ–­è·¯å™¨å¯åŠ¨ï¼Œé»˜è®¤:50%-->
           <dubbo:parameter key="breakerErrorPercent" value="50"/>
 		
     </dubbo:reference>
 ```
 
-3.¶ÏÂ·Æ÷Ô­Àí
+3.æ–­è·¯å™¨åŸç†
 http://www.voidcn.com/blog/t0591/article/p-6174364.html
 
-4.¼òµ¥²âÊÔ´úÂë
+4.ç®€å•æµ‹è¯•ä»£ç 
 
 ```
 package com.alibaba.dubbo.circuitbreak.support.hystrix.test;
@@ -48,7 +48,7 @@ public class SayHelloCommand extends HystrixCommand<String> {
 	}
 
 	/**
-	 * ²ÉÓÃÏß³Ì³ØÀ´¿ØÖÆ·şÎñÒÀÀµ
+	 * é‡‡ç”¨çº¿ç¨‹æ± æ¥æ§åˆ¶æœåŠ¡ä¾èµ–
 	 *
 	 * @param coreSize
 	 * @param timeoutInMilliseconds
@@ -56,15 +56,15 @@ public class SayHelloCommand extends HystrixCommand<String> {
 	public SayHelloCommand(Integer coreSize, Integer timeoutInMilliseconds) {
 		super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(SayHelloCommand.class.getName()))
 				.andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey(SayHelloCommand.class.getName()))
-				.andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(coreSize))// ·şÎñÏß³Ì³ØÊıÁ¿
+				.andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(coreSize))// æœåŠ¡çº¿ç¨‹æ± æ•°é‡
 				.andCommandPropertiesDefaults(HystrixCommandProperties.Setter().withExecutionTimeoutEnabled(true)
-						.withExecutionTimeoutInMilliseconds(timeoutInMilliseconds)// ³¬Ê±Ê±¼ä
-						.withCircuitBreakerErrorThresholdPercentage(60)// ÈÛ¶ÏÆ÷¹Ø±Õµ½´ò¿ªãĞÖµ
-						.withCircuitBreakerSleepWindowInMilliseconds(3000)));//// ÈÛ¶ÏÆ÷´ò¿ªµ½¹Ø±ÕµÄÊ±¼ä´°³¤¶È
+						.withExecutionTimeoutInMilliseconds(timeoutInMilliseconds)// è¶…æ—¶æ—¶é—´
+						.withCircuitBreakerErrorThresholdPercentage(60)// ç†”æ–­å™¨å…³é—­åˆ°æ‰“å¼€é˜ˆå€¼
+						.withCircuitBreakerSleepWindowInMilliseconds(3000)));//// ç†”æ–­å™¨æ‰“å¼€åˆ°å…³é—­çš„æ—¶é—´çª—é•¿åº¦
 	}
 
 	/**
-	 * ²ÉÓÃĞÅºÅÁ¿À´¿ØÖÆÊÇ·ñÈÛ¶Ï
+	 * é‡‡ç”¨ä¿¡å·é‡æ¥æ§åˆ¶æ˜¯å¦ç†”æ–­
 	 *
 	 * @param Strategy
 	 * @param maxConcurrentRequests
@@ -74,12 +74,12 @@ public class SayHelloCommand extends HystrixCommand<String> {
 			Integer timeoutInMilliseconds) {
 		super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(SayHelloCommand.class.getName()))
 				.andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey(SayHelloCommand.class.getName()))
-				.andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter())// ·şÎñÏß³Ì³ØÊıÁ¿
-				.andCommandPropertiesDefaults(HystrixCommandProperties.Setter().withExecutionIsolationStrategy(Strategy)// ×Ô¶¨Òå²ßÂÔ
-						.withExecutionIsolationSemaphoreMaxConcurrentRequests(maxConcurrentRequests) // ĞÅºÅÁ¿×Ô¶¨Òå×î´ó²¢·¢Êı
-						.withExecutionTimeoutEnabled(true).withExecutionTimeoutInMilliseconds(timeoutInMilliseconds)// ³¬Ê±Ê±¼ä
-						.withCircuitBreakerErrorThresholdPercentage(60)// ÈÛ¶ÏÆ÷¹Ø±Õµ½´ò¿ªãĞÖµ
-						.withCircuitBreakerSleepWindowInMilliseconds(3000)));//// ÈÛ¶ÏÆ÷´ò¿ªµ½¹Ø±ÕµÄÊ±¼ä´°³¤¶È
+				.andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter())// æœåŠ¡çº¿ç¨‹æ± æ•°é‡
+				.andCommandPropertiesDefaults(HystrixCommandProperties.Setter().withExecutionIsolationStrategy(Strategy)// è‡ªå®šä¹‰ç­–ç•¥
+						.withExecutionIsolationSemaphoreMaxConcurrentRequests(maxConcurrentRequests) // ä¿¡å·é‡è‡ªå®šä¹‰æœ€å¤§å¹¶å‘æ•°
+						.withExecutionTimeoutEnabled(true).withExecutionTimeoutInMilliseconds(timeoutInMilliseconds)// è¶…æ—¶æ—¶é—´
+						.withCircuitBreakerErrorThresholdPercentage(60)// ç†”æ–­å™¨å…³é—­åˆ°æ‰“å¼€é˜ˆå€¼
+						.withCircuitBreakerSleepWindowInMilliseconds(3000)));//// ç†”æ–­å™¨æ‰“å¼€åˆ°å…³é—­çš„æ—¶é—´çª—é•¿åº¦
 	}
 
 	public Integer getTimeoutInMilliseconds() {
@@ -108,7 +108,7 @@ public class SayHelloCommand extends HystrixCommand<String> {
 
 	@Override
 	protected String run() throws Exception {
-		Thread.sleep(1001L); // ÑİÊ¾³¬Ê±½øÈëFallback
+		Thread.sleep(1001L); // æ¼”ç¤ºè¶…æ—¶è¿›å…¥Fallback
 		return "hello";
 	}
 
