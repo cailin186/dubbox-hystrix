@@ -7,12 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.dubbo.circuitbreak.CircuitBreaker;
-import com.alibaba.dubbo.circuitbreak.fallback.FallbackMeta;
-import com.alibaba.dubbo.circuitbreak.fallback.TransportFallback;
 import com.alibaba.dubbo.circuitbreak.util.ProfileUtil;
 import com.alibaba.dubbo.circuitbreak.util.mail.EmailBatchSendUtils;
-import com.alibaba.dubbo.circuitbreak.utils.JsonUtils;
-import com.alibaba.dubbo.circuitbreak.utils.SpringUtils;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.rpc.Invocation;
 import com.alibaba.dubbo.rpc.Invoker;
@@ -80,17 +76,14 @@ public class HystrixCircuitBreaker extends HystrixConfig implements CircuitBreak
 		URL url = invoker.getUrl();
 		Throwable throwable = new RpcException("Hystrix fallback");
 		Result result = new RpcResult(throwable);
-		/*try {
-			String serviceName = url.getParameter("");
+		try {
+			String serviceName = getInterServiceName(url);
 			String methodName = invocation.getMethodName();
-			String fallbackmeta = url.getParameter(serviceName + "." + methodName);
-			FallbackMeta fallbackMeta = JsonUtils.parseObject(fallbackmeta, FallbackMeta.class);
-			TransportFallback transportFallback = SpringUtils.getBean(fallbackMeta.getTransportBeanName());
-			String val = transportFallback.getFallback();
-			result = new RpcResult(val);
+			String fallbackVal = url.getParameter(serviceName + "." + methodName);
+			result = new RpcResult(fallbackVal);
 		}catch(Exception e) {
 			// ignore
-		}*/
+		}
 		
 		String content = this.invocation.toString() + "<br/><br/><br/><br/>";
 		if(exRecord != null) {
@@ -106,6 +99,10 @@ public class HystrixCircuitBreaker extends HystrixConfig implements CircuitBreak
 		return result;
 	}
 
+	private String getInterServiceName(URL url) {
+		  String service = url.getServiceInterface();
+		  return service.substring(service.lastIndexOf(".") + 1);
+	}
 	@Override
 	public Result circuitBreak() {
 		return super.execute();

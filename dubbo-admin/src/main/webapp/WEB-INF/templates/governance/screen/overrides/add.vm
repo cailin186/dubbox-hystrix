@@ -59,31 +59,31 @@
 	<tr>
 		<!--线程池大小-->
 		<td style="width: 500px;"><input type="hidden" value="threadPoolCoreSize" name="initOverrideKey0"/>线程池大小(threadPoolCoreSize):<input type="text" value="50" name="initOverrideValue0"/></td>
-		<td><input type="checkbox" value="0"/><input type="hidden" id="initOverrideStataus0" value="false"/></td>
+		<td><input type="checkbox" value="0"/><input type="hidden" id="initOverrideStataus0" name="initOverrideStataus0" value="false"/></td>
 	</tr>
 	
 	<tr>
 		<!--熔断器开关-->
 		<td style="width: 500px;"><input type="hidden" value="breakerEnabled" name="initOverrideKey1"/>是否打开熔断器(breakerEnabled):<input type="text" value="false" name="initOverrideValue1"/></td>
-		<td><input type="checkbox" value="1"/><input type="hidden" id="initOverrideStataus1" value="false"/></td>
+		<td><input type="checkbox" value="1"/><input type="hidden" id="initOverrideStataus1" name="initOverrideStataus1" value="false"/></td>
 	</tr>
 	
 	<tr>
 		<!--统计滚动时间窗口-->
 		<td style="width: 500px;"><input type="hidden" value="RollingStatisticalWindowInMilliseconds" name="initOverrideKey2"/>统计滚动时间窗口(RollingStatisticalWindowInMilliseconds):<input type="text" value="10000" name="initOverrideValue2"/></td>
-		<td><input type="checkbox" value="2"/><input type="hidden" id="initOverrideStataus2" value="false"/></td>
+		<td><input type="checkbox" value="2"/><input type="hidden" id="initOverrideStataus2" name="initOverrideStataus2" value="false"/></td>
 	</tr>
 	
 	<tr>
 		<!--中断器中断休眠多长时间后放部分流量进入-->
 		<td style="width: 500px;"><input type="hidden" value="breakerSleepMilliseconds" name="initOverrideKey3"/>熔断之后休眠时长放部分流量进入(breakerSleepMilliseconds):<input type="text" value="5000" name="initOverrideValue3"/></td>
-		<td><input type="checkbox" value="3"/><input type="hidden" id="initOverrideStataus3" value="false"/></td>
+		<td><input type="checkbox" value="3"/><input type="hidden" id="initOverrideStataus3" name="initOverrideStataus3" value="false"/></td>
 	</tr>
 	
 	<tr>
 		<!--错误率为多少之后启动熔断器-->
 		<td style="width: 500px;"><input type="hidden" value="breakerErrorPercent" name="initOverrideKey4"/>达到错误率启动熔断器(breakerErrorPercent):<input type="text" value="50" name="initOverrideValue4"/></td>
-		<td><input type="checkbox" value="4"/><input type="hidden" id="initOverrideStataus4" value="false"/></td>
+		<td><input type="checkbox" value="4"/><input type="hidden" id="initOverrideStataus4" name="initOverrideStataus4" value="false"/></td>
 	</tr>
 </table>
 <hr>
@@ -148,7 +148,8 @@
 	  if(check()) {
 	      var prefix = 'initOverrideStataus';
     	  $("input[type='checkbox']").each(function() {  
-                if(this.checked = false) {
+		        alert(this.checked);
+                if(this.checked == false) {
 				    $("#" + prefix + this.value).val(false);
     			}else {
 				   	$("#" + prefix + this.value).val(true)
