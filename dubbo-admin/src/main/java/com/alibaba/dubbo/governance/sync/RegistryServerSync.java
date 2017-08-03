@@ -67,6 +67,7 @@ public class RegistryServerSync implements InitializingBean, DisposableBean, Not
         return registryCache;
     }
     
+    // ch : 初始化的时候订阅注册的URL
     public void afterPropertiesSet() throws Exception {
         logger.info("Init Dubbo Admin Sync Cache...");
         registryService.subscribe(SUBSCRIBE, this);

@@ -325,6 +325,7 @@ public class ProviderServiceImpl extends AbstractService implements ProviderServ
     
     private Map<Long, URL> findAllProviderUrl() {
         Map<String, String> filter = new HashMap<String, String>();
+        // {"category" : "providers"}
         filter.put(Constants.CATEGORY_KEY, Constants.PROVIDERS_CATEGORY);
         return SyncUtils.filterFromCategory(getRegistryCache(), filter);
     }

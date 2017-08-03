@@ -120,8 +120,10 @@ $control.setTemplate("home:menu.vm")
    <table id="serviceCompletion" style="margin-top: 20px;">
 		 #if($currentUser.role != "G")
 		<tr>
+		    <!--新增-->
 			<th>$i18n.get("add"): </th>
 			<td style="padding-left: 10px;">
+			    <!--提供者-->
 			    <a href="$rootContextPath.getURI("governance/providers/add")">$i18n.get("providers")</a>&nbsp;
 				<a href="$rootContextPath.getURI("governance/routes/add")">$i18n.get("routes")</a>&nbsp;
 				<a href="$rootContextPath.getURI("governance/overrides/add")">$i18n.get("overrides")</a>&nbsp;

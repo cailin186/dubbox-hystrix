@@ -56,6 +56,7 @@ public class Index {
         Set<String> services  = new HashSet<String>(); 
         List<Provider> pList = new ArrayList<Provider>();
         try {
+        	// ch 获取提供者
             pList = providerService.findAll();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

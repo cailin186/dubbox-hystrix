@@ -40,6 +40,9 @@ public class AbstractService {
     @Autowired
     protected RegistryService registryService;
     
+    /**
+     * ch 从缓存中获取了相应的注册URL
+     */
     public ConcurrentMap<String, ConcurrentMap<String, Map<Long, URL>>> getRegistryCache(){
         return sync.getRegistryCache();
     }

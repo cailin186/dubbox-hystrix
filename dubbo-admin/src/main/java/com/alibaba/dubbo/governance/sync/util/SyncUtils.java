@@ -177,10 +177,14 @@ public class SyncUtils {
     
     // Map<category, Map<servicename, Map<Long, URL>>>
     public static <SM extends Map<String, Map<Long, URL>>> Map<Long, URL> filterFromCategory(Map<String, SM> urls, Map<String, String> filter) {
+    	// ch 定义常量，将常量作为键值存放到map当中，然后将其作为参数传过来，再进行判断该Map当中是否存在相应的键，不明白这样做的好处?
         String c = (String) filter.get(Constants.CATEGORY_KEY);
         if(c==null) throw new IllegalArgumentException("no category");
-        
+        // 再将其移除(难道是为了这个方法要满足这种调用的方法才能使用?仅仅只是为了让调用端实例化Map?这么做还有什么好处呢?)
         filter.remove(Constants.CATEGORY_KEY);
+        // urls是一个Map<category, Map<servicename, Map<Long, URL>>>的结构，通过"providers"常量得到
+        // Map<servicename, Map<Long, URL>>
+        // filter即作为过滤规则，同时也作为过滤后URL的存储容器
         return filterFromService(urls.get(c), filter);
     }
     

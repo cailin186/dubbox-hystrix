@@ -1,24 +1,38 @@
 package com.alibaba.dubbo.circuitbreak.support.hystrix;
 
-import org.apache.log4j.Logger;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.alibaba.dubbo.circuitbreak.CircuitBreaker;
+import com.alibaba.dubbo.circuitbreak.fallback.FallbackMeta;
+import com.alibaba.dubbo.circuitbreak.fallback.TransportFallback;
 import com.alibaba.dubbo.circuitbreak.util.ProfileUtil;
 import com.alibaba.dubbo.circuitbreak.util.mail.EmailBatchSendUtils;
+import com.alibaba.dubbo.circuitbreak.utils.JsonUtils;
+import com.alibaba.dubbo.circuitbreak.utils.SpringUtils;
 import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.rpc.*;
-import com.netflix.hystrix.*;
+import com.alibaba.dubbo.rpc.Invocation;
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.Result;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.RpcResult;
+import com.netflix.hystrix.HystrixCommandGroupKey;
+import com.netflix.hystrix.HystrixCommandKey;
+import com.netflix.hystrix.HystrixCommandProperties;
+import com.netflix.hystrix.HystrixThreadPoolProperties;
 
 /**
  * @author cailin
  * @create 20170704 20:08
  **/
-public class HystrixCircuitBreaker extends HystrixConfig implements CircuitBreaker {
-
-	
+public class HystrixCircuitBreaker extends HystrixConfig implements CircuitBreaker{
 	private Invoker<?> invoker;
 	private Invocation invocation;
-	private static Logger logger = Logger.getLogger(HystrixCircuitBreaker.class);
+	private Exception exRecord;
+	private static final Logger LOG = LoggerFactory.getLogger(HystrixCircuitBreaker.class);
 
 	/**
 	 * 断路器配置未来可优化为动态配置，策略不写死在代码中
@@ -63,10 +77,32 @@ public class HystrixCircuitBreaker extends HystrixConfig implements CircuitBreak
 	 */
 	@Override
 	protected Result getFallback() {
+		URL url = invoker.getUrl();
 		Throwable throwable = new RpcException("Hystrix fallback");
 		Result result = new RpcResult(throwable);
+		/*try {
+			String serviceName = url.getParameter("");
+			String methodName = invocation.getMethodName();
+			String fallbackmeta = url.getParameter(serviceName + "." + methodName);
+			FallbackMeta fallbackMeta = JsonUtils.parseObject(fallbackmeta, FallbackMeta.class);
+			TransportFallback transportFallback = SpringUtils.getBean(fallbackMeta.getTransportBeanName());
+			String val = transportFallback.getFallback();
+			result = new RpcResult(val);
+		}catch(Exception e) {
+			// ignore
+		}*/
+		
+		String content = this.invocation.toString() + "<br/><br/><br/><br/>";
+		if(exRecord != null) {
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			exRecord.printStackTrace(pw);
+			content += sw.toString();
+		}
+		
+		LOG.error("HystrixCircuitBreaker.getFallback", content);
 	   	String mailTo = ProfileUtil.getProperty("monitor.mail.to") == null ? "cailin@51talk.com" : ProfileUtil.getProperty("monitor.mail.to");
-		EmailBatchSendUtils.sendMail(mailTo,"熔断报警",throwable.getStackTrace().toString());
+		EmailBatchSendUtils.sendMail(mailTo,"熔断报警", content);
 		return result;
 	}
 
@@ -77,11 +113,13 @@ public class HystrixCircuitBreaker extends HystrixConfig implements CircuitBreak
 
 	@Override
 	protected Result run() throws Exception {
-		return invoker.invoke(invocation);
+		Result result = null;
+		try {
+			result = invoker.invoke(invocation);
+		}catch(Exception e) {
+			exRecord = e;
+			throw e;
+		}
+		return result;
 	}
-
-	
-	
-	
-	
 }

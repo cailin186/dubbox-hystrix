@@ -16,11 +16,25 @@ import java.util.Properties;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProfileUtil {
-	private static Logger logger = Logger.getLogger(ProfileUtil.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ProfileUtil.class);
+	/**
+	 * update ch: 类文件的资源加载一次就行
+	 */
+	private static final Properties pros = new Properties();
 
+	static {
+		try {
+			FileInputStream fis = new FileInputStream(ProfileUtil.class.getResource("/mail.properties").getPath());
+			pros.load(fis);
+		}catch(Exception e) {
+			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
+		}
+	}
 	public static String getProperty(String fileName, String pro) {
 		Properties ssoProp = new Properties();
 		FileInputStream ssoFis;
@@ -28,11 +42,11 @@ public class ProfileUtil {
 			ssoFis = new FileInputStream(ProfileUtil.class.getResource("/" + fileName).getPath());
 			ssoProp.load(ssoFis);
 		} catch (FileNotFoundException e) {
-			logger.error("FileNotFoundException{}", e);
+			LOG.error("FileNotFoundException{}", e);
 		} catch (InvalidPropertiesFormatException e) {
-			logger.error("InvalidPropertiesFormatException{}", e);
+			LOG.error("InvalidPropertiesFormatException{}", e);
 		} catch (IOException e) {
-			logger.error("IOException{}", e);
+			LOG.error("IOException{}", e);
 		}
 
 		String properties = ssoProp.getProperty(pro);
@@ -40,20 +54,7 @@ public class ProfileUtil {
 	}
 
 	public static String getProperty(String pro) {
-		Properties ssoProp = new Properties();
-		FileInputStream ssoFis;
-		try {
-			ssoFis = new FileInputStream(ProfileUtil.class.getResource("/mail.properties").getPath());
-			ssoProp.load(ssoFis);
-		} catch (FileNotFoundException e) {
-			logger.error("FileNotFoundException{}", e);
-		} catch (InvalidPropertiesFormatException e) {
-			logger.error("InvalidPropertiesFormatException{}", e);
-		} catch (IOException e) {
-			logger.error("IOException{}", e);
-		}
-
-		String properties = ssoProp.getProperty(pro);
+		String properties = pros.getProperty(pro);
 		return properties;
 	}
 
@@ -63,7 +64,7 @@ public class ProfileUtil {
 			configuration.setProperty(key, value);
 			configuration.save();
 		} catch (ConfigurationException e) {
-			logger.error("ConfigurationException{}", e);
+			LOG.error("ConfigurationException{}", e);
 		}
 
 	}

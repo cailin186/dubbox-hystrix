@@ -217,9 +217,17 @@ public class Overrides  extends Restful {
     static final String FORM_OVERRIDE_KEY = "overrideKey";
     static final String FORM_OVERRIDE_VALUE = "overrideValue";
     
+    // ch add initinal param key
+    static final String FORM_OVERRIDE_KEY_INIT = "initOverrideKey";
+    static final String FORM_OVERRIDE_VALUE_INIT = "initOverrideValue";
+    static final String FORM_OVERRIDE_STATUS_INIT = "initOverrideStataus";
+    
+    static final String FORM_FALLBACK_KEY = "fallbackKey";
+    static final String FORM_FALLBACK_VALUE = "fallbackValue";
+    
     static final String FORM_DEFAULT_MOCK_METHOD_FORCE = "mockDefaultMethodForce";
     static final String FORM_DEFAULT_MOCK_METHOD_JSON = "mockDefaultMethodJson";
-    
+  
     static final String FORM_ORIGINAL_METHOD_FORCE_PREFIX = "mockMethodForce.";
     static final String FORM_ORIGINAL_METHOD_PREFIX = "mockMethod.";
     
@@ -245,9 +253,11 @@ public class Overrides  extends Restful {
         Map<String, String> method2Json = new HashMap<String, String>();
         
         for(Map.Entry<String, Object> param : context.entrySet()) {
+        	// 得到参数名称对应的变量
             String key = param.getKey().trim();
+            // 参数名称一定是String类型的
             if(! (param.getValue() instanceof String) ) continue;
-            
+            // 得到参数变量名称
             String value = (String) param.getValue();
             
             if(key.startsWith(FORM_OVERRIDE_KEY) && value != null && value.trim().length() > 0) {
@@ -256,6 +266,35 @@ public class Overrides  extends Restful {
                 if(overrideValue != null && overrideValue.trim().length() > 0) {
                     override2Value.put(value.trim(), overrideValue.trim());
                 }
+            }
+            
+            /**
+             * 键名称和值都作为相应的值，有唯一的键指定，而键名称和值是一一对应的，通过键名称和值名称后面的索引号对应起来
+             * 如果参数名称的键名称以initOverrideKey开头并且参数名称为非空
+             */
+            if(key.startsWith(FORM_OVERRIDE_KEY_INIT) && value != null && value.trim().length() > 0) {
+            	// 获取参数名称的后缀索引
+            	String index = key.substring(FORM_OVERRIDE_KEY_INIT.length());
+            	// 获得参数名称对应的参数值
+            	String initOverrideVal =(String) context.get(FORM_OVERRIDE_VALUE_INIT + index);
+            	System.out.println(context.get(FORM_OVERRIDE_STATUS_INIT + index));
+
+            	boolean enable = Boolean.parseBoolean(context.get(FORM_OVERRIDE_STATUS_INIT + index).toString());
+            	if(enable && initOverrideVal != null && initOverrideVal.trim().length() > 0) {
+            		override2Value.put(value.trim(), initOverrideVal.trim());
+            	}
+            	
+            	continue;
+            }
+            
+            if(key.startsWith(FORM_FALLBACK_KEY) && value != null && value.trim().length() > 0) {
+            	String index = key.substring(FORM_FALLBACK_KEY.length());
+            	String fallback = (String)context.get(FORM_FALLBACK_VALUE + index);
+            	if(fallback != null && fallback.trim().length() > 0) {
+            		override2Value.put(value.trim(), fallback.trim());
+            	}
+            	
+            	continue;
             }
             
             if(key.startsWith(FORM_ORIGINAL_METHOD_PREFIX) && value != null && value.trim().length() > 0) {

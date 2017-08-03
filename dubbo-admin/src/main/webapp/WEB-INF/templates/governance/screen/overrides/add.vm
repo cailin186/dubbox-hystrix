@@ -7,7 +7,9 @@
 <table cellpadding="0" cellspacing="0" class="info" id="table1">
 	#if(! $service)
 	<tr>
+		<!--服务名-->
 		<td style="width: 100px;"><b>$i18n.get("service"):</b></td>
+		<!--服务复选框-->
 		<td style="width: 300px;"><input id="service" type="text" name="service" class="setting_input" style="width: 200px;" />
 			<select onchange="fnSetService(this)">
     		<option value="">$i18n.get("Choose")</option>
@@ -22,6 +24,7 @@
 		<td ">$service<input id="service" type="hidden" name="service" class="setting_input" style="width: 200px;" value="$service"/>
 	#end
 	<tr>
+		<!--消费者应用名-->
 		<td ><b>$i18n.get("ConsumerApplication"):</b></td>
 		#if($application)
 			<td>$application</td>
@@ -30,10 +33,12 @@
 		#end
 	</tr>
 	<tr>
+		<!--只推送给执行消费者地址(不填表示对消费者应用的所有机器都有效)-->
 		<td ><b>$i18n.get("overrideConsumerAddress"):</b></td>
 		<td><input type="text" id="address" name="address" class="setting_input" style="width: 300px;" value="" maxlength="200"/> <font color="blue">$i18n.get("tipConsumerAddress")</font></td>
 	</tr>
 	<tr>
+		<!--状态-->
 		<td><b>$i18n.get("status"): <b></td>
 		<td>
 			<select name="enabled">
@@ -44,23 +49,77 @@
 	</tr>
 </table>
 <hr>
+<b>初始配置</b>
+<br>
+<table cellpadding="0" cellspacing="0" class="info" id="initParamTable">
+	<tr>
+		<td style="width: 500px;">参数名称</td>
+		<td><input type="checkbox" onclick="swapCheck()"/></td>
+	</tr>
+	<tr>
+		<!--线程池大小-->
+		<td style="width: 500px;"><input type="hidden" value="threadPoolCoreSize" name="initOverrideKey0"/>线程池大小(threadPoolCoreSize):<input type="text" value="50" name="initOverrideValue0"/></td>
+		<td><input type="checkbox" value="0"/><input type="hidden" id="initOverrideStataus0" value="false"/></td>
+	</tr>
+	
+	<tr>
+		<!--熔断器开关-->
+		<td style="width: 500px;"><input type="hidden" value="breakerEnabled" name="initOverrideKey1"/>是否打开熔断器(breakerEnabled):<input type="text" value="false" name="initOverrideValue1"/></td>
+		<td><input type="checkbox" value="1"/><input type="hidden" id="initOverrideStataus1" value="false"/></td>
+	</tr>
+	
+	<tr>
+		<!--统计滚动时间窗口-->
+		<td style="width: 500px;"><input type="hidden" value="RollingStatisticalWindowInMilliseconds" name="initOverrideKey2"/>统计滚动时间窗口(RollingStatisticalWindowInMilliseconds):<input type="text" value="10000" name="initOverrideValue2"/></td>
+		<td><input type="checkbox" value="2"/><input type="hidden" id="initOverrideStataus2" value="false"/></td>
+	</tr>
+	
+	<tr>
+		<!--中断器中断休眠多长时间后放部分流量进入-->
+		<td style="width: 500px;"><input type="hidden" value="breakerSleepMilliseconds" name="initOverrideKey3"/>熔断之后休眠时长放部分流量进入(breakerSleepMilliseconds):<input type="text" value="5000" name="initOverrideValue3"/></td>
+		<td><input type="checkbox" value="3"/><input type="hidden" id="initOverrideStataus3" value="false"/></td>
+	</tr>
+	
+	<tr>
+		<!--错误率为多少之后启动熔断器-->
+		<td style="width: 500px;"><input type="hidden" value="breakerErrorPercent" name="initOverrideKey4"/>达到错误率启动熔断器(breakerErrorPercent):<input type="text" value="50" name="initOverrideValue4"/></td>
+		<td><input type="checkbox" value="4"/><input type="hidden" id="initOverrideStataus4" value="false"/></td>
+	</tr>
+</table>
+<hr>
 <b>$i18n.get("override.config")</b>
 <br>
 <table cellpadding="0" cellspacing="0" class="info" id="paramTable">
 	<tr>
+		<!--参数名-->
 		<td style="width: 150px;"><b>$i18n.get("parameter.key"): </b><input name='overrideKey0' id='overrideKey0' type='text' style='width: 100px;' /></td>
+		<!--参数值-->
 		<td><b>$i18n.get("parameter.value"): </b><input type="text" id="overrideValue0" name="overrideValue0" class="setting_input" style="width: 300px;" value="" maxlength="200"/> <font color="blue">$i18n.get("parameter.tip")</font></td>
 	</tr>
 </table>
-<br>
+<br />
 <div class="btn">
+	<!--新增参数-->
 	<a href="#" onclick="paramTableAddRow(); return false;"><b>$i18n.get("add")$i18n.get("parameter")</b></a>
 </div>
-
-<br>
-<br>
+<br/>
+<br/>
 <hr>
-	
+<b>hystrix降级返回</b>
+<table cellpadding="0" cellspacing="0" class="info" id="fallbackParamTable">
+	<tr>
+		<td style="width: 200px;"><b>serviceBeanName.methodName</b><input name='fallbackKey0' id='fallbackKey0' type='text' style='width: 150px;' /></td>
+		<td style="width: 200px;"><b>fallback:</b><input name='fallbackValue0' id='fallbackValue0' type='text' style='width: 150px;' /></td>
+	</tr>
+</table>
+<br />
+<div class="btn">
+	<a href="#" onclick="fallbackAddRow(); return false;"><b>add fallback</b></a>
+</div>
+<br />
+<hr />
+<br />
+<!--
 <b>$i18n.get("override.mock")</b> 
 <br>
 <table cellpadding="0" cellspacing="0" class="info" id="mockTable">
@@ -74,13 +133,30 @@
 <div class="btn">
 	<a href="#" onclick="mockTableAddRow(); return false;"><b>$i18n.get("add")$i18n.get("mock.method")</b></a>
 </div>
+
 <br /><hr><br />
+-->
+
 <div class="btn">
-	<a href="#" onclick="if(check()){byId('df').submit();}"><b>$i18n.get("save")</b></a>
+	<!--保存-->
+	<a href="#" onclick="submitDfForm()"><b>$i18n.get("save")</b></a>
 </div>
 </form>
 
 <script language="javascript">
+    function submitDfForm() {
+	  if(check()) {
+	      var prefix = 'initOverrideStataus';
+    	  $("input[type='checkbox']").each(function() {  
+                if(this.checked = false) {
+				    $("#" + prefix + this.value).val(false);
+    			}else {
+				   	$("#" + prefix + this.value).val(true)
+    			}
+           }); 
+		   byId('df').submit();
+	   }
+	}
 	function fnSetService(obj){
 		if(obj.value!=''){
 			document.getElementById('service').value = obj.value;
@@ -139,8 +215,21 @@ function paramTableAddRow(){
 	paramTRLastIndex++; //将行号推进下一行
 }
 
-var mockTRLastIndex = 1; // 行号
+var fallbackTRLastIndex = 1;
+function fallbackAddRow() {
+	var table = byId("fallbackParamTable");
+	var newTR = table.insertRow(table.rows.length);
+	newTR.id = "fallbackParamTable" + fallbackTRLastIndex;
+	var newNameTH = document.createElement('th');
+	var newNameTD = newTR.insertCell(0);
+	newNameTD.innerHTML = "<b>serviceBean.methodName:</b><input name='fallbackKey" + fallbackTRLastIndex + "' id='fallbackKey" + fallbackTRLastIndex +"' type='text' style='width: 100px;'/>";
+	var newfallbackTD = newTR.insertCell(1);
+	newfallbackTD.innerHTML = "<b>fallback:</b><input name='fallbackValue" + fallbackTRLastIndex + "' id='fallbackValue" + fallbackTRLastIndex +"' type='text' style='width: 100px;'/>"
+					+ "&nbsp;<a href='javascript:;' onclick=\"tableDeleteRow('fallbackParamTable', 'fallbackParamTable" + fallbackTRLastIndex + "'); return false;\">$i18n.get("delete")</a>";
+	fallbackTRLastIndex++;
+}
 
+var mockTRLastIndex = 1; // 行号
 function mockTableAddRow(){
 	var table = byId("mockTable");
 	var newTR = table.insertRow(table.rows.length);
@@ -165,4 +254,20 @@ function tableDeleteRow(tableid, rowid){
 	
 	table.deleteRow(row.rowIndex);
 }
+
+var isCheckAll = false;  
+function swapCheck() {
+ 	if (isCheckAll) {  
+        $("input[type='checkbox']").each(function() {  
+            this.checked = false;  
+        });  
+        isCheckAll = false;  
+    } else {  
+        $("input[type='checkbox']").each(function() {  
+            this.checked = true;  
+        });  
+        isCheckAll = true;  
+    }  
+}
+
 </script>

@@ -70,7 +70,6 @@ public class ParameterMap implements Map<String, Object> {
     
     private final TurbineRunDataInternal rundata;
 
-    @SuppressWarnings("unchecked")
     public ParameterMap(HttpServletRequest request, Context context, TurbineRunDataInternal navigator){
         super();
         this.request = request;

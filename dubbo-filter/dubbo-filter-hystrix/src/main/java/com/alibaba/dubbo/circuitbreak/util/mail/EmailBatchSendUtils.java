@@ -1,21 +1,20 @@
 package com.alibaba.dubbo.circuitbreak.util.mail;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Maps;
-import com.alibaba.dubbo.circuitbreak.util.*;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.HashSet;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.alibaba.dubbo.circuitbreak.util.ProfileUtil;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Maps;
 
 /**
  * Created by wangxing01 on 2017/1/23.
@@ -86,15 +85,14 @@ public class EmailBatchSendUtils {
     }
     
     public  static void sendMail(String mailRecipient,String subject,String content){
-        String mailSubject = getLocalHostAddress()+":"+subject;
-        if(mailRecipient.indexOf(",")>0){
+    	try {
+    		String mailSubject = getLocalHostAddress()+":"+subject;
             mailRecipients = mailRecipient.split(",");
     		EmailBatchSendUtils emailBatchSendUtils = EmailBatchSendUtils.getInstance(mailSubject);
             emailBatchSendUtils.addToMailQueue(mailSubject, content);
-        }else{
-        	LOGGER.error("mailRecipient is not valid{}",mailRecipients);
-        }
-
+    	}catch(Exception e) {
+    		LOGGER.error(e.getMessage(), e);
+    	}
     }
     
     /**
